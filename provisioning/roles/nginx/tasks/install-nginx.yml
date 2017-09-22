@@ -1,0 +1,11 @@
+---
+- name: Create new repo for NGINX installation
+  copy:
+    src: nginx.repo
+    dest: /etc/yum.repos.d/nginx.repo
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Install NGINX packages
+  yum: name=nginx state=present

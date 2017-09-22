@@ -1,0 +1,20 @@
+---
+- name: Create group
+  group: 
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - shaggy
+    - velma
+    - fred
+    - daphne
+
+- name: Create user
+  user: 
+    name: "{{ item }}"
+    group: "{{ item }}"
+  with_items:
+    - shaggy
+    - velma
+    - fred
+    - daphne

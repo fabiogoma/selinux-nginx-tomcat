@@ -1,0 +1,4 @@
+.vagrant
+.git
+*.retry
+*.gz

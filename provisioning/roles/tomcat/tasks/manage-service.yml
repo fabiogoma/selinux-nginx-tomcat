@@ -1,0 +1,9 @@
+---
+- name: Copy tomcat systemd service configuration
+  copy:
+    src: tomcat.service
+    dest: /etc/systemd/system/tomcat.service
+    owner: root
+    group: root
+    mode: 0644
+  notify: Reload systemd and restart tomcat service

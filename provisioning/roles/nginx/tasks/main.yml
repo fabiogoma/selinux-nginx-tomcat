@@ -1,0 +1,4 @@
+---
+- include: create-users.yml
+- include: install-nginx.yml
+- include: create-configuration.yml

@@ -1,0 +1,4 @@
+---
+- include: create-npa.yml
+- include: install-tomcat.yml
+- include: manage-service.yml

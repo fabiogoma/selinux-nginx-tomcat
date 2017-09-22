@@ -1,0 +1,18 @@
+---
+- name: Create tomcat default folder
+  file:
+    path: /opt/tomcat/
+    owner: tomcat
+    group: tomcat
+    state: directory
+    mode: 0750
+
+- name: Unpack tomcat tarball file
+  unarchive:
+    src: http://apache.mirror.triple-it.nl/tomcat/tomcat-8/v8.5.20/bin/apache-tomcat-8.5.20.tar.gz
+    dest: /opt/tomcat/
+    owner: tomcat
+    group: tomcat
+    remote_src: yes
+    extra_opts: [--strip-components=1]
+    keep_newer: yes

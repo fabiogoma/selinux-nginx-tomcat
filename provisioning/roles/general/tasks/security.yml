@@ -1,0 +1,8 @@
+---
+- name: Set SELinux to enforcing
+  selinux:
+    policy: targeted
+    state: enforcing
+
+- name: Disable firewalld
+  service: name=firewalld enabled=no state=stopped

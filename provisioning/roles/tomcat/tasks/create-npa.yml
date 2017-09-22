@@ -1,0 +1,14 @@
+---
+- name: Create tomcat group
+  group: 
+    name: tomcat
+    state: present
+    system: yes
+
+- name: Create tomcat user
+  user: 
+    name: tomcat
+    group: tomcat
+    comment: "Tomcat default user"
+    shell: /sbin/nologin
+    system: yes
