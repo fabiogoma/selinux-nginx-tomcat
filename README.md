@@ -213,7 +213,7 @@ What the command **setsebool -P httpd_read_user_content 1** will do is basically
 
 Instead of setting this boolean ON, let's change the context of the files, there are two ways to do it, the easy way and the easiest way  
 
-The easy way, make sure you are in the correct folder, check the context of one existent file like index.html for example and use the same datails for your files:
+The easy way, make sure you are in the correct folder, check the context of one existent file like index.html for example and use the same datails for your files. We need to change the context of files and for that the command **chcon** will be used:
 ```bash
 [root@nginx html]# cd /usr/share/nginx/html
 [root@nginx html]# ls -lZ index.html 
