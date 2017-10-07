@@ -9,7 +9,7 @@
 
 - name: Unpack tomcat tarball file
   unarchive:
-    src: http://apache.mirror.triple-it.nl/tomcat/tomcat-8/v8.5.20/bin/apache-tomcat-8.5.20.tar.gz
+    src: http://www-eu.apache.org/dist/tomcat/tomcat-8/v8.5.23/bin/apache-tomcat-8.5.23.tar.gz
     dest: /opt/tomcat/
     owner: tomcat
     group: tomcat
