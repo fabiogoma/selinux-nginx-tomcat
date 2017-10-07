@@ -1,0 +1,28 @@
+---
+- name: Create a home page for each user
+  template:
+    src: page.html.j2
+    dest: /home/{{ item }}/{{ item }}.html
+    owner: "{{ item }}"
+    group: "{{ item }}"
+    mode: 0644
+  vars:
+    filename: "{{ item }}"
+  with_items:
+    - shaggy
+    - velma
+    - fred
+    - daphne
+
+- name: Copy images to the home folder
+  copy:
+    src: "{{ item }}.png"
+    dest: /home/{{ item }}/{{ item }}.png
+    owner: "{{ item }}"
+    group: "{{ item }}"
+    mode: 0644
+  with_items:
+    - shaggy
+    - velma
+    - fred
+    - daphne
