@@ -79,16 +79,24 @@ provisioning/
 │   │       └── security.yml
 │   ├── nginx
 │   │   ├── files
+│   │   │   ├── daphne.png
 │   │   │   ├── default.conf
-│   │   │   └── nginx.repo
+│   │   │   ├── fred.png
+│   │   │   ├── nginx.repo
+│   │   │   ├── shaggy.png
+│   │   │   ├── tomcat.conf
+│   │   │   └── velma.png
 │   │   ├── handlers
 │   │   │   ├── main.yml
 │   │   │   └── restart-nginx.yml
-│   │   └── tasks
-│   │       ├── create-configuration.yml
-│   │       ├── create-users.yml
-│   │       ├── install-nginx.yml
-│   │       └── main.yml
+│   │   ├── tasks
+│   │   │   ├── create-configuration.yml
+│   │   │   ├── create-home-pages.yml
+│   │   │   ├── create-users.yml
+│   │   │   ├── install-nginx.yml
+│   │   │   └── main.yml
+│   │   └── templates
+│   │       └── page.html.j2
 │   └── tomcat
 │       ├── files
 │       │   └── tomcat.service
@@ -103,7 +111,7 @@ provisioning/
 ├── tomcat-playbook.retry
 └── tomcat-playbook.yml
 
-12 directories, 23 files
+13 directories, 30 files
 ```
 In the general role, a few packages are installed. Among others, **setroubleshoot** and **setroubleshoot-server**. This two packages provides a serie of tools that helps on the troubleshooting regarding SELinux issues.
 
