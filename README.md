@@ -230,7 +230,7 @@ Then try to access on your browser http://nginx.local/velma.html
 
 Now the easiest way, if you know index.html already works, why not just use it as a reference for your files?  
 ```bash
-[root@nginx html]# chcon --reference /usr/share/nginx/html fred.*
+[root@nginx html]# chcon --reference /usr/share/nginx/html/index.html fred.*
 [root@nginx html]# ls -lZ fred.*
 -rw-r--r--. root root system_u:object_r:httpd_sys_content_t:s0 fred.html
 -rw-r--r--. root root system_u:object_r:httpd_sys_content_t:s0 fred.png
