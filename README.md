@@ -125,10 +125,7 @@ $ vagrant ssh nginx
 [root@nginx ~]# mv /home/shaggy/* /usr/share/nginx/html/
 [root@nginx ~]# mv /home/velma/* /usr/share/nginx/html/
 ```
-Now with the files in place, open your browser and try to access the pages from each user  
-http://nginx.local/daphne.html  
-http://nginx.local/fred.html  
-http://nginx.local/shaggy.html  
+Now with the files in place, open your browser and try to access one of the pages
 http://nginx.local/velma.html  
 
 If you followed all the steps correctly, you should be able to see a page similar to this  
