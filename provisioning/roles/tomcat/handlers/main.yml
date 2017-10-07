@@ -1,2 +1,2 @@
 ---
-- include: restart-tomcat.yml
+- import_tasks: restart-tomcat.yml

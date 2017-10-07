@@ -1,2 +1,2 @@
 ---
-- include: restart-services.yml
+- import_tasks: restart-services.yml

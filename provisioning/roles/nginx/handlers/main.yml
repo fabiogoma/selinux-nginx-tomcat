@@ -1,2 +1,2 @@
 ---
-- include: restart-nginx.yml
+- import_tasks: restart-nginx.yml

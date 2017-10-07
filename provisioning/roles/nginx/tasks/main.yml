@@ -1,4 +1,4 @@
 ---
-- include: create-users.yml
-- include: install-nginx.yml
-- include: create-configuration.yml
+- import_tasks: create-users.yml
+- import_tasks: install-nginx.yml
+- import_tasks: create-configuration.yml
