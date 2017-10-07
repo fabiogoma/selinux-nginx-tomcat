@@ -1,5 +1,5 @@
 ---
-- name: Generate NGINX configuration
+- name: Copy NGINX configuration
   copy:
     src: default.conf
     dest: /etc/nginx/conf.d/default.conf
@@ -7,3 +7,11 @@
     group: root
     mode: 0644
   notify: Reload systemd and restart NGINX service
+
+- name: Copy NGINX configuration to act as proxy for tomcat
+  copy:
+    src: tomcat.conf
+    dest: /etc/nginx/conf.d/tomcat.conf.bkp
+    owner: root
+    group: root
+    mode: 0644
