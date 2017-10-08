@@ -312,6 +312,12 @@ Hopefully you'll see something like that
   <img src="images/proxy-pass.png">
 </p>
 
+# Time to go
+I hope by now you no longer think about disable SELinux before you give it a try. The next step is to destroy the environment and free up space on your host
+
+```bash
+$ vagrant destroy -f
+```
 
 # Credits
 [Thomas Cameron](http://people.redhat.com/tcameron/) from [Redhat](http://www.redhat.com) gave a few talks about this same subject and that was the inspiration for this demo.  
