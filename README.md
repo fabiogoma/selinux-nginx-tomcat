@@ -313,7 +313,7 @@ Hopefully you'll see something like that
 </p>
 
 # Time to go
-I hope by now you no longer think about disable SELinux before you give it a try. The next step is to destroy the environment and free up space on your host
+I hope by now you no longer think about disable SELinux before you give it a try. The next step is to destroy the environment and free up space on your host. If you are still logged on the VM, exit and return to your host before execute the command below.  
 
 ```bash
 $ vagrant destroy -f
