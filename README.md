@@ -261,7 +261,7 @@ And last but not least http://nginx.local/shaggy.html
 
 # Communication across the network
 Now we are a litle bit more familiar with SELinux, I suppose we can assume that it's not that scary right? :dragon:  
-Let's now move on to the next step, we are going to access a different endpoint on our NGINX server and that request will be redirected to tomcat on a remote server  
+Let's now move on to the next step, we are going to access a different endpoint in our NGINX server and that request will be redirected to tomcat on a remote server  
 
 Using your browser, try to access http://nginx.local/characters
 <p align="center">
