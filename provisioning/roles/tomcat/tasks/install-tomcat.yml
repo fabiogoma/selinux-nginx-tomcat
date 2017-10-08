@@ -16,3 +16,9 @@
     remote_src: yes
     extra_opts: [--strip-components=1]
     keep_newer: yes
+
+- name: Configure server.xml to host a static content project
+  lineinfile:
+    path: /opt/tomcat/conf/server.xml
+    insertafter: 'unpackWARs'
+    line: '        <Context docBase="/opt/tomcat/characters" path="/characters" />'
