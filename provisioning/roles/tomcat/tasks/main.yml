@@ -2,3 +2,4 @@
 - import_tasks: create-npa.yml
 - import_tasks: install-tomcat.yml
 - import_tasks: manage-service.yml
+- import_tasks: deploy-static-content.yml
