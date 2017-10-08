@@ -3,7 +3,7 @@ Security Enhanced Linux (SELinux) is a Linux kernel security module that provide
 
 It was first developed and then open sourced by the National Security Agency (NSA) in 2000. You can find the current list of contributors [here](https://www.nsa.gov/what-we-do/research/selinux/contributors.shtml)  
  
-Back in the early days, SELinux was just so complex that the first thing the great majority of sysadmins did, was to set it to disabled mode. Now a days you should not be doing that, even if you don't have time or availability to study it, you should at least set it to permissive, which basicaly permits everything and generate audit alerts if necessary.  
+Back in the early days, SELinux was just so complex that the first thing the great majority of sysadmins used to do, was just disable it. Now a days you should not be doing that, even if you don't have time or availability to study it, you should at least set it to permissive, which basicaly permits everything and generate audit alerts if necessary.  
 
 To check the current status of your SELinux
 ```bash
@@ -22,10 +22,10 @@ To make it permanent
 $ sudo sed -i 's/SELINUX=enforcing/SELINUX=permissive/g'  /etc/selinux/config
 ```
 
-Now, if you have time, is open to learn and to get the benefits of what's considered a best practice in security systems, please keep reading.
+Now, if you have time, is open to learn and to get the benefits of what's considered a best practice in security systems, please keep on reading.
 
-# Tools used for this demo
-I'm assuming you run GNU/Linux on your desktop, have installed and configured [nss-mdns](https://github.com/lathiat/nss-mdns), also have installed [vagrant](https://www.vagrantup.com/), [ansible](https://www.ansible.com/) and [virtualbox](https://www.virtualbox.org/). The other tools will be downloaded automatically by my automation scripts.  
+# Tools used on this demo
+I'm assuming you run GNU/Linux on your desktop, have installed and configured [nss-mdns](https://github.com/lathiat/nss-mdns), also have installed [vagrant](https://www.vagrantup.com/), [ansible](https://www.ansible.com/) and [virtualbox](https://www.virtualbox.org/). Other tools will be downloaded, installed and configured automatically by ansible playbooks.  
 
 <p align="center">
   <img src="images/logos.png">
@@ -39,7 +39,7 @@ This is a extremely simple environment with two hosts only.
 </p>
 
 # Bringing up your own environment
-After clone my repo, navigate to the project folder and use vagrant to instantiate your own environment.  
+After clone my repo, navigate to the project folder and use vagrant to provision your own environment.  
 
 ```bash
 $ git clone https://github.com/fabiogoma/selinux-nginx-tomcat.git
@@ -47,7 +47,8 @@ $ cd selinux-nginx-tomcat
 $ vagrant up
 ```
 Hopefully, after a few minutes your environment will be up, depending on your internet connection.  
-After the execution, both machines will be up and with [nginx](https://www.nginx.com/) and [tomcat](http://tomcat.apache.org/) running as a systemd service. From your host you can test them both, by just making an http request using curl
+After the execution, both machines will be up and running. One host containing [NGINX](https://www.nginx.com/) and the other [tomcat](http://tomcat.apache.org/). They are both running as a systemd service.  
+Both servers have a multicast dns configured, which gives you a capability of reach them by name instead of IP addresses. From your host you can test it, by just making an http request using curl.  
 
 ```bash
 $ curl tomcat.local:8080
@@ -84,7 +85,6 @@ provisioning/
 │   │   │   ├── fred.png
 │   │   │   ├── nginx.repo
 │   │   │   ├── shaggy.png
-│   │   │   ├── tomcat.conf
 │   │   │   └── velma.png
 │   │   ├── handlers
 │   │   │   ├── main.yml
@@ -99,24 +99,29 @@ provisioning/
 │   │       └── page.html.j2
 │   └── tomcat
 │       ├── files
-│       │   └── tomcat.service
+│       │   ├── daphne.png
+│       │   ├── fred.png
+│       │   ├── index.html
+│       │   ├── shaggy.png
+│       │   ├── tomcat.service
+│       │   └── velma.png
 │       ├── handlers
 │       │   ├── main.yml
 │       │   └── restart-tomcat.yml
 │       └── tasks
 │           ├── create-npa.yml
+│           ├── deploy-static-content.yml
 │           ├── install-tomcat.yml
 │           ├── main.yml
 │           └── manage-service.yml
-├── tomcat-playbook.retry
 └── tomcat-playbook.yml
 
-13 directories, 30 files
+13 directories, 34 files
 ```
-In the general role, a few packages are installed. Among others, **setroubleshoot** and **setroubleshoot-server**. This two packages provides a serie of tools that helps on the troubleshooting regarding SELinux issues.
+The general role installs a few packages, among others, **setroubleshoot** and **setroubleshoot-server**. This two packages provides a serie of tools that helps on the troubleshooting regarding SELinux issues.
 
 # Time to get your hands dirty
-SSH into the nginx server, switch to root user and move the pages from users to NGINX default html folder
+SSH into the NGINX server, switch to root user and move the pages from users to NGINX default html folder
 ```bash
 $ vagrant ssh nginx
 [vagrant@nginx ~]$ sudo su -
@@ -125,14 +130,14 @@ $ vagrant ssh nginx
 [root@nginx ~]# mv /home/shaggy/* /usr/share/nginx/html/
 [root@nginx ~]# mv /home/velma/* /usr/share/nginx/html/
 ```
-Now with the files in place, open your browser and try to access one of the pages
+Now with files in place, open your browser and try to access one of the pages.
 http://nginx.local/velma.html  
 
-If you followed all the steps correctly, you should be able to see a page similar to this  
+If you followed all the steps correctly, you should be able to see a page similar to the page below.  
 <p align="center">
   <img src="images/forbidden.png">
 </p>
-:astonished: What? Why? Ok, as an experienced engineer, let's check the permissions  
+:astonished: What? Why? Ok, as an experienced engineer, let's check the permissions.  
 
 ```bash
 [root@nginx ~]# cd /usr/share/nginx/html/
@@ -157,12 +162,11 @@ total 276
 [root@nginx html]# chown -R root. *
 ```
 
-Now Let's check again  
+Now let's try again  
 <p align="center">
   <img src="images/forbidden.png">
 </p>
-:confounded: What can be possibly happening?  
-Ok, no reason for panic, here we are going to execute the first command that will use SELinux features to give us a hint  
+:confounded: What can be possibly wrong? Ok, no reason for panic, here we are going to execute the first command that will use SELinux features to give us a hint.  
 
 ```bash
 [root@nginx html]# ls -lZ
@@ -254,3 +258,63 @@ And last but not least http://nginx.local/shaggy.html
 <p align="center">
   <img src="images/shaggy-page.png">
 </p>
+
+# Communication across the network
+Now we are a litle bit more familiar with SELinux, I suppose we can assume that it's not that scary right? :dragon:  
+Let's now move on to the next step, we are going to access a different endpoint on our NGINX server and that request will be redirected to tomcat on a remote server  
+
+Using your browser, try to access http://nginx.local/characters
+<p align="center">
+  <img src="images/proxy-pass-error.png">
+</p>
+
+Once again we get and error message instead of what we are expecting. But now we know how to debug, let's use **sealert** again to see if this is an issue related to SELinux
+
+```bash
+[root@nginx conf.d]# sealert -a /var/log/audit/audit.log
+```
+
+Once again, the logs are very clear about what's happening. SELinux is preventing NGINX daemon to remotely access another server.
+
+```
+SELinux is preventing /usr/sbin/nginx from name_connect access on the tcp_socket port 8080.
+
+*****  Plugin catchall_boolean (47.5 confidence) suggests   ******************
+
+If you want to allow httpd to can network connect
+Then you must tell SELinux about this by enabling the 'httpd_can_network_connect' boolean.
+
+Do
+setsebool -P httpd_can_network_connect 1
+
+*****  Plugin catchall_boolean (47.5 confidence) suggests   ******************
+
+If you want to allow httpd to can network relay
+Then you must tell SELinux about this by enabling the 'httpd_can_network_relay' boolean.
+
+Do
+setsebool -P httpd_can_network_relay 1
+
+*****  Plugin catchall (6.38 confidence) suggests   **************************
+```
+
+:orange_book: **A similar problem would happen if you were trying to access a database for example**
+
+Let's set the booleans suggested by SELinux and see what happens next.
+
+```bash
+[root@nginx conf.d]# setsebool -P httpd_can_network_connect 1
+[root@nginx conf.d]# setsebool -P httpd_can_network_relay 1
+```
+Using your browser, check again if you now can access http://nginx.local/characters  
+Hopefully you'll see something like that
+<p align="center">
+  <img src="images/proxy-pass.png">
+</p>
+
+
+# Credits
+[Thomas Cameron](http://people.redhat.com/tcameron/) from [Redhat](http://www.redhat.com) gave a few talks about this same subject and that was the inspiration for this demo.  
+[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/cNoVgDqqJmM/0.jpg)](https://www.youtube.com/watch?v=cNoVgDqqJmM)
+
+©Hanna-Barbera characters is a registered trademark of the Hanna-Barbera Productions, Inc.
