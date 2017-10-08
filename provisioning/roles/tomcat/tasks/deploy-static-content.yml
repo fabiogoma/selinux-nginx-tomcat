@@ -1,0 +1,22 @@
+---
+- name: Create the default folder to hold static content
+  file:
+    path: /opt/tomcat/characters
+    state: directory
+    owner: tomcat
+    group: tomcat
+    mode: 0755
+
+- name: Transfer static content to deployment folder
+  copy:
+    src: "{{ item }}"
+    dest: /opt/tomcat/characters/{{ item }}
+    owner: tomcat
+    group: tomcat
+    mode: 0644
+  with_items:
+    - index.html
+    - shaggy.png
+    - velma.png
+    - fred.png
+    - daphne.png
