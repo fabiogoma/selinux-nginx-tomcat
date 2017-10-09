@@ -39,11 +39,20 @@ This is a extremely simple environment with two hosts only.
 </p>
 
 # Bringing up your own environment
-After clone my repo, navigate to the project folder and use vagrant to provision your own environment.  
+After clone my repo, navigate to the project folder and update the lines 3 and for of [Vagrantfile](Vagrantfile) to match your main network (the one with internet access) then, use vagrant to provision your own environment.  
 
 ```bash
 $ git clone https://github.com/fabiogoma/selinux-nginx-tomcat.git
 $ cd selinux-nginx-tomcat
+$ vi Vagrantfile
+```
+```ruby
+...
+  #Replace eno1 with the apropriate name for your host main interface
+  config.vm.network 'public_network', bridge: "eno1"
+...
+```
+```bash
 $ vagrant up
 ```
 Hopefully, after a few minutes your environment will be up, depending on your internet connection.  
