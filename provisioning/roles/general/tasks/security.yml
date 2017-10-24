@@ -4,5 +4,16 @@
     policy: targeted
     state: enforcing
 
-- name: Disable firewalld
-  service: name=firewalld enabled=no state=stopped
+- name: Enable tomcat access
+  firewalld:
+    port: 8080/tcp
+    permanent: true
+    state: enabled
+  when: inventory_hostname | search("tomcat") 
+
+- name: Enable http access
+  firewalld:
+    service: http
+    permanent: true
+    state: enabled
+  when: inventory_hostname | search("nginx") 
