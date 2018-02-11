@@ -4,9 +4,21 @@
     policy: targeted
     state: enforcing
 
+- name: Create tomcat firewall service
+  copy:
+    src: tomcat.xml
+    dest: /etc/firewalld/services/tomcat.xml
+  when: inventory_hostname | search("tomcat")
+
+- name: Reload firewalld
+  systemd:
+    state: restarted
+    name: firewalld
+  when: inventory_hostname | search("tomcat")
+
 - name: Enable tomcat access
   firewalld:
-    port: 8080/tcp
+    service: tomcat
     permanent: true
     state: enabled
   when: inventory_hostname | search("tomcat") 
