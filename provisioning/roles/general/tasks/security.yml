@@ -14,7 +14,12 @@
   systemd:
     state: restarted
     name: firewalld
-  when: inventory_hostname | search("tomcat")
+
+- name: Enable mdns access
+  firewalld:
+    service: mdns
+    permanent: true
+    state: enabled
 
 - name: Enable tomcat access
   firewalld:
@@ -28,4 +33,9 @@
     service: http
     permanent: true
     state: enabled
-  when: inventory_hostname | search("nginx") 
+  when: inventory_hostname | search("nginx")
+
+- name: Reload firewalld
+  systemd:
+    state: restarted
+    name: firewalld
