@@ -351,7 +351,9 @@ Hopefully you'll see something like that
 Summary
 -------
 
-During this demo, we managed to configure SELinux to allow access to local files and also to a remote component. Those are common examples that actually happen on daily basis as a sysadmin or a DevOps engineer. If you setup your environments using any configuration management tool (Ansible, Chef, Puppet etc.), you can setup all of those context and booleans in a automated way, that was not done here on purpose, to teach you how use them.
+During this demo, we managed to configure SELinux to allow access to local files and also to a remote component. Those are common examples that actually happen on daily basis as a sysadmin or a DevOps engineer.
+
+If you setup your environments using any configuration management tool (Ansible, Chef, Puppet etc.), you can setup all of those context and booleans in a automated way, that was not done here on purpose, to teach you how use them.
 
 Time to go
 ----------
