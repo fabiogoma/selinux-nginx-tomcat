@@ -1,7 +1,7 @@
 Vagrant.configure('2') do |config|
   config.vm.box = 'centos/7'
-  #Replace wlp8s0 with the apropriate name for your host main interface
-  config.vm.network 'public_network', bridge: "wlp8s0"
+  # Replace wlp8s0 with the apropriate name for your host main interface
+  config.vm.network 'public_network', bridge: 'wlp8s0'
   config.vm.synced_folder '.', '/vagrant', disabled: true
   config.vm.provider 'virtualbox' do |vb|
     vb.memory = '2048'
