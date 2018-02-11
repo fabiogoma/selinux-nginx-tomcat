@@ -10,13 +10,13 @@
 - name: Transfer static content to deployment folder
   copy:
     src: "{{ item }}"
-    dest: /opt/tomcat/characters/{{ item }}
+    dest: /opt/tomcat/characters/{{ item | basename }}
     owner: tomcat
     group: tomcat
     mode: 0644
   with_items:
-    - index.html
-    - shaggy.png
-    - velma.png
-    - fred.png
-    - daphne.png
+    - deploy/index.html
+    - deploy/shaggy.png
+    - deploy/velma.png
+    - deploy/fred.png
+    - deploy/daphne.png
