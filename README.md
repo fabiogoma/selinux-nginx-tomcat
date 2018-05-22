@@ -1,6 +1,13 @@
 Why disable SELinux when you can get a NSA level security?
 ==========================================================
-Security Enhanced Linux (SELinux) is a Linux kernel security module that provides a mechanism for supporting access control security policies, including mandatory access controls (MAC).  
+Security Enhanced Linux (SELinux) is a Linux kernel security module that provides a mechanism for supporting access control security policies, including mandatory access controls (MAC). The policies provided by SELinux can be used to determine access between:
+* Users
+* Files
+* Directories
+* Memory
+* Sockets
+* TCP/UDP Ports
+* etc.   
 
 It was first developed and then open sourced by the National Security Agency (NSA) in 2000. You can find the current list of contributors [here](https://www.nsa.gov/what-we-do/research/selinux/contributors.shtml)  
  
