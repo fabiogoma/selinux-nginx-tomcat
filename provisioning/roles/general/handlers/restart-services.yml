@@ -1,3 +1,6 @@
 ---
 - name: Restart mDNS service
-  service: name=avahi-daemon enabled=yes state=restarted
+  service: 
+    name: avahi-daemon
+    enabled: yes
+    state: restarted
