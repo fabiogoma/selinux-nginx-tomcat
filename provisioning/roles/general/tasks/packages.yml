@@ -5,7 +5,9 @@
     state: present
 
 - name: Install basic packages
-  yum: name={{ item }} state=present
+  yum: 
+    name: "{{ item }}"
+    state: present
   with_items:
     - nss-mdns
     - net-tools
@@ -19,7 +21,9 @@
     - setroubleshoot-server
 
 - name: Install Java
-  yum: name={{ item }} state=present
+  yum:
+    name: "{{ item }}"
+    state: present
   with_items:
     - java-1.8.0-openjdk-devel
     - java-1.8.0-openjdk
