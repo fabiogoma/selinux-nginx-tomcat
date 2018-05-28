@@ -4,11 +4,21 @@
     policy: targeted
     state: enforcing
 
+- name: Set tomcat hostname
+  hostname:
+    name: tomcat
+  when: inventory_hostname is search("tomcat")
+
+- name: Set NGINX hostname
+  hostname:
+    name: nginx
+  when: inventory_hostname is search("nginx")
+
 - name: Create tomcat firewall service
   copy:
     src: tomcat.xml
     dest: /etc/firewalld/services/tomcat.xml
-  when: inventory_hostname | search("tomcat")
+  when: inventory_hostname is search("tomcat")
 
 - name: Reload firewalld
   systemd:
@@ -26,14 +36,14 @@
     service: tomcat
     permanent: true
     state: enabled
-  when: inventory_hostname | search("tomcat") 
+  when: inventory_hostname is search("tomcat") 
 
 - name: Enable http access
   firewalld:
     service: http
     permanent: true
     state: enabled
-  when: inventory_hostname | search("nginx")
+  when: inventory_hostname is search("nginx")
 
 - name: Reload firewalld
   systemd:
