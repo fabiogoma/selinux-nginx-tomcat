@@ -1,29 +1,24 @@
+hosts = ['tomcat', 'nginx']
+
 Vagrant.configure('2') do |config|
   config.vm.box = 'centos/7'
-  # Replace wlp8s0 with the apropriate name for your host main interface
-  config.vm.network 'public_network', bridge: 'wlp8s0'
+
   config.vm.synced_folder '.', '/vagrant', disabled: true
-  config.vm.provider 'virtualbox' do |vb|
-    vb.memory = '2048'
+
+  config.vm.provider :libvirt do |libvirt|
+    libvirt.driver = 'kvm'
+    libvirt.cpus = 2
+    libvirt.memory = '2048'
   end
 
-  config.vm.define 'tomcat' do |node|
-    node.vm.hostname = 'tomcat'
-    node.vm.provision 'ansible' do |ansible|
-      ansible.limit = 'tomcat'
-      ansible.compatibility_mode = '2.0'
-      ansible.verbose = false
-      ansible.playbook = 'provisioning/tomcat-playbook.yml'
-    end
-  end
-
-  config.vm.define 'nginx' do |node|
-    node.vm.hostname = 'nginx'
-    node.vm.provision 'ansible' do |ansible|
-      ansible.limit = 'nginx'
-      ansible.compatibility_mode = '2.0'
-      ansible.verbose = false
-      ansible.playbook = 'provisioning/nginx-playbook.yml'
+  hosts.each do |host|
+    config.vm.define "#{host}" do |node|
+      node.vm.provision 'ansible' do |ansible|
+        ansible.limit = "#{host}"
+        ansible.compatibility_mode = '2.0'
+        ansible.verbose = false
+        ansible.playbook = "provisioning/#{host}-playbook.yml"
+      end
     end
   end
 end
