@@ -398,7 +398,7 @@ And last but not least [http://nginx.local/shaggy.html](http://nginx.local/shagg
 Communication across the network
 --------------------------------
 
-Now that we are a little bit more familiar with SELinux, I suppose we can assume that it's not that scary, right? :dragon:
+Now that we are a little bit more familiar with SELinux, I suppose we can assume that it's not that scary, right?
 
 Let's now move on to the next step, where we are going to access a different endpoint in our NGINX server and that request will be redirected to tomcat on a remote server.
 
