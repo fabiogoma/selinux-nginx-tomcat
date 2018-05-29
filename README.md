@@ -156,6 +156,11 @@ $ vagrant ssh nginx
 [root@nginx ~]# mv /home/shaggy/* /usr/share/nginx/html/
 [root@nginx ~]# mv /home/velma/* /usr/share/nginx/html/
 ```
+Or in a short way
+```bash
+[root@nginx ~]# find /home -type f \( -name "*.html" -or -name "*.png" \) -exec mv {} /usr/share/nginx/html/ \;
+```
+
 Now with files in place, open your browser and try to access one of the pages.
 http://nginx.local/velma.html  
 
