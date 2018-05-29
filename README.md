@@ -5,7 +5,7 @@ Security Enhanced Linux (SELinux) is a Linux kernel security module that provide
 
 It was first developed and then open sourced by the National Security Agency (NSA) in 2000. You can find the current list of contributors [here](https://www.nsa.gov/what-we-do/research/selinux/contributors.shtml)
 
-Security-Enhanced Linux (SELinux) can be a key component of a defense-in-depth architecture. It enables the enforcement of fine-grain (mandatory access control) security policies. The SELinux road can sometimes be bumpy, which leads many engineers to switch it off. Nowadays you should not be doing that anymore, even if you're a not willing to study it, you should at least set it to permissive, which basicaly allows everything to pass through and generate audit alerts when necessary.
+Security-Enhanced Linux (SELinux) can be a key component of a defense-in-depth architecture. It enables the enforcement of fine-grain (Mandatory Access Control) security policies. The SELinux road can sometimes be bumpy, which leads many engineers to switch it off. Nowadays you should not be doing that anymore, even if you're a not willing to study it, you should at least set it to permissive, which basicaly allows everything to pass through and generate audit alerts when necessary.
 
 To check the current status of your SELinux
 
@@ -33,13 +33,13 @@ Now, if you think you can get any benefit from it and has an open mind to learn 
 Tools used on this demo
 -----------------------
 
-I'm assuming you run GNU/Linux on your desktop, have installed and configured [nss-mdns](https://github.com/lathiat/nss-mdns), also have installed [vagrant](https://www.vagrantup.com/), [ansible](https://www.ansible.com/) and [libvirt](https://libvirt.org/). Other tools will be downloaded, installed and configured automatically by ansible playbooks.
-
->NOTICE: By default vagrant only support virtualbox, here we use libvirt+KVM, so don't forget to install the vagrant plugin [vagrant-libvirt](https://github.com/vagrant-libvirt/vagrant-libvirt)
+I'm assuming you run GNU/Linux on your desktop (I'm running this **updated version of this** demo on Fedora 28), have installed and configured [nss-mdns](https://github.com/lathiat/nss-mdns), also have installed [vagrant](https://www.vagrantup.com/), [ansible](https://www.ansible.com/) and [libvirt](https://libvirt.org/). Other tools will be downloaded, installed and configured automatically by ansible playbooks.
 
 <p align="center">
   <img src="images/logos.png">
 </p>
+
+>NOTICE: **By default vagrant only support virtualbox, here we use libvirt+KVM, so don't forget to install the vagrant plugin [vagrant-libvirt](https://github.com/vagrant-libvirt/vagrant-libvirt)**
 
 Topology
 --------
@@ -108,7 +108,7 @@ nginx                      : ok=18   changed=17   unreachable=0    failed=0
 
 Now, you have both machines up and running. One host containing [tomcat](http://tomcat.apache.org/) and the other [NGINX](https://www.nginx.com/), both of them running as a systemd service. Firewalld is up and configured to accept connections on the necessary ports. You will find SELinux already enforced as well.
 
-You can check more details about the provisioning steps just executed by taking a deep look on my [Ansible](https://www.ansible.com/) playbooks and roles here on this [repo](.).
+You can check more details about the provisioning steps just executed by taking a deep look on my [Ansible](https://www.ansible.com/) playbooks and roles here on this [repo](https://github.com/fabiogoma/selinux-nginx-tomcat).
 
 Although it's possible to access the servers directly by IP, I chose to setup multicast DNS on both of them, which gives us a capability of reach the machines by name. From the CLI of your host you can test it, by just making an http request using curl.
 
@@ -121,7 +121,9 @@ $ curl tomcat.local:8080
 ...
 ...
 ...
+```
 
+```bash
 $ curl nginx.local
 <!DOCTYPE html>
 <html>
@@ -148,7 +150,7 @@ Last login: Tue May 29 17:46:59 2018 from 192.168.121.1
 [vagrant@nginx ~]$
 ```
 
-This is how the ansible playbooks are organized:
+This is how the ansible playbooks and roles are organized:
 
 ```bash
 $ tree provisioning/
@@ -224,16 +226,12 @@ $ vagrant ssh nginx
 [root@nginx ~]# mv /home/shaggy/* /usr/share/nginx/html/
 [root@nginx ~]# mv /home/velma/* /usr/share/nginx/html/
 ```
-<<<<<<< HEAD
-=======
+
 Or in a short way
+
 ```bash
 [root@nginx ~]# find /home -type f \( -name "*.html" -or -name "*.png" \) -exec mv {} /usr/share/nginx/html/ \;
 ```
-
-Now with files in place, open your browser and try to access one of the pages.
-http://nginx.local/velma.html  
->>>>>>> 7ebe8089db120d60412bb4a1690b8991a75d65d5
 
 Now with files in place, open your browser and try to access one of the pages. http://nginx.local/velma.html
 
@@ -242,6 +240,7 @@ If you followed all the steps correctly, you should be able to see a page simila
 <p align="center">
   <img src="images/forbidden.png">
 </p>
+
 :astonished: What? Why? Ok, as an experienced engineer, let's check the permissions.
 
 ```bash
@@ -272,7 +271,8 @@ Now let's try again
 <p align="center">
   <img src="images/forbidden.png">
 </p>
-:confounded: What can be possibly wrong? Ok, no reason for panic, here we are going to execute the first command that will use SELinux features to gives us a hint.  
+
+:confounded: What can be possibly wrong? Ok, no reason for panic, here we are going to execute the first command that will use SELinux features to gives us a hint.
 
 ```bash
 [root@nginx html]# ls -lZ
@@ -289,7 +289,7 @@ Now let's try again
 [root@nginx html]#
 ```
 
-The parameter **Z** shows us the SELinux context of all files, this paramenter can be used not only with **ls** command, but with a myriad of commands that manipulate files and sockets (i.e: netstat, ps, id etc.). Let's now use our swiss army knives provided by the packages **setroubleshoot** and **setroubleshoot-server** installed during the provision step.
+The parameter **Z** shows us the SELinux labels for all files, this paramenter can be used not only with **ls** command, but with a myriad of commands that manipulate files and sockets (i.e: netstat, ps, id etc.). Let's now use our swiss army knives provided by the packages **setroubleshoot** and **setroubleshoot-server** installed during the provisioning step.
 
 Because our SELinux is by default set to be enforced, every possible risk issue will generate alerts on **/var/log/audit/audit.log**, but this file is too ugly to be seen on a naked eye, let's use the **sealert** tool instead.
 
