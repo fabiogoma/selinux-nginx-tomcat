@@ -82,9 +82,9 @@ PLAY RECAP *********************************************************************
 tomcat                     : ok=21   changed=20   unreachable=0    failed=0
 ```
 
-The previous command will provision a new virtual machine and setup the tomcat application server inside it. This setup is using a CentOS image which is very similiar to redhat, I would say they are slightly different only on trade mark images and logos, in fact, CentOS is owned by [Redhat Inc](https://www.redhat.com).
+The previous command will provision a new virtual machine and setup the tomcat application server inside it. This setup is using a CentOS image which is very similiar to RHEL, I would say they are slightly different only on trade mark images and logos, in fact, [CentOS](https://www.centos.org/) is owned by [Redhat Inc](https://www.redhat.com).
 
-The time spent on this provision depends entirely on the type of hardware you have and also your internet speed.
+The time spent on this step depends entirely on the type of hardware you have and also your internet speed.
 
 After the execution, let's now do the same for our NGINX host
 
@@ -106,11 +106,15 @@ PLAY RECAP *********************************************************************
 nginx                      : ok=18   changed=17   unreachable=0    failed=0
 ```
 
+>NOTICE: **On both previous output, I used "..." to subtract the full text, you should exepct much more content**
+
 Now, you have both machines up and running. One host containing [tomcat](http://tomcat.apache.org/) and the other [NGINX](https://www.nginx.com/), both of them running as a systemd service. Firewalld is up and configured to accept connections on the necessary ports. You will find SELinux already enforced as well.
 
 You can check more details about the provisioning steps just executed by taking a deep look on my [Ansible](https://www.ansible.com/) playbooks and roles here on this [repo](https://github.com/fabiogoma/selinux-nginx-tomcat).
 
-Although it's possible to access the servers directly by IP, I chose to setup multicast DNS on both of them, which gives us a capability of reach the machines by name. From the CLI of your host you can test it, by just making an http request using curl.
+Although it's possible to reach the servers directly by IP, I chose not to, instead we will use the multicast DNS on both of them, which gives us a capability of reach the machines by name.
+
+From the CLI of your host you can test it, by just making an http request using curl.
 
 ```bash
 $ curl tomcat.local:8080
@@ -134,11 +138,11 @@ $ curl nginx.local
 ...
 ```
 
-During this demo you will need to ssh the two hosts, I recommend you to use vagrant to do it, otherwise you need to extract the vagrant ssh key generated for each host.
+During this demo you will need to connect via ssh into our new VMs, I recommend you to use vagrant to do it, otherwise you need to extract the vagrant ssh key generated for each host.
 
 ```bash
 $ vagrant ssh tomcat
-Last login: Tue May 29 17:41:51 2018 from 192.168.121.1
+Last login: XXXXXXXXXXXXXXXXXXX from 192.168.121.1
 [vagrant@tomcat ~]$
 ```
 
@@ -146,7 +150,7 @@ or
 
 ```bash
 $ vagrant ssh nginx
-Last login: Tue May 29 17:46:59 2018 from 192.168.121.1
+Last login: XXXXXXXXXXXXXXXXXXX from 192.168.121.1
 [vagrant@nginx ~]$
 ```
 
@@ -216,7 +220,7 @@ The general role will install a few packages, among others, **setroubleshoot** a
 Time to get your hands dirty
 ----------------------------
 
-SSH into the NGINX server, switch to root user and move the pages from users to NGINX default html folder
+Open a new session on NGINX server, switch to root user and move the pages from users to NGINX default html folder
 
 ```bash
 $ vagrant ssh nginx
@@ -230,10 +234,12 @@ $ vagrant ssh nginx
 Or in a short way
 
 ```bash
+$ vagrant ssh nginx
+[vagrant@nginx ~]$ sudo su -
 [root@nginx ~]# find /home -type f \( -name "*.html" -or -name "*.png" \) -exec mv {} /usr/share/nginx/html/ \;
 ```
 
-Now with files in place, open your browser and try to access one of the pages. http://nginx.local/velma.html
+Now with files in place, open your browser and try to access one of the pages. [http://nginx.local/velma.html](http://nginx.local/velma.html)
 
 If you followed all the steps correctly, you should be able to see a page similar to the page below.
 
@@ -272,7 +278,7 @@ Now let's try again
   <img src="images/forbidden.png">
 </p>
 
-:confounded: What can be possibly wrong? Ok, no reason for panic, here we are going to execute the first command that will use SELinux features to gives us a hint.
+:confounded: What can be possibly wrong? Don't panic. Here we are going to execute the first command that will use SELinux features to gives us a hint.
 
 ```bash
 [root@nginx html]# ls -lZ
@@ -330,7 +336,7 @@ The easiest way is to check the context of a file already in place, the one that
 
 ```bash
 [root@nginx html]# cd /usr/share/nginx/html
-[root@nginx html]# ls -lZ index.html 
+[root@nginx html]# ls -lZ index.html
 -rw-r--r--. root root system_u:object_r:httpd_sys_content_t:s0 index.html
 [root@nginx html]# chcon -t httpd_sys_content_t velma.*
 [root@nginx html]# ls -lZ velma*
@@ -338,7 +344,7 @@ The easiest way is to check the context of a file already in place, the one that
 -rw-r--r--. root root system_u:object_r:httpd_sys_content_t:s0 velma.png
 ```
 
-Then try to access on your browser http://nginx.local/velma.html
+Then try to access on your browser [http://nginx.local/velma.html](http://nginx.local/velma.html)
 <p align="center">
   <img src="images/velma-page.png">
 </p>
@@ -353,7 +359,7 @@ You could also had copied the entire SELinux configuration from index.html, you 
 [root@nginx html]#
 ```
 
-Then try to access on your browser http://nginx.local/fred.html
+Then try to access on your browser [http://nginx.local/fred.html](http://nginx.local/fred.html)
 <p align="center">
   <img src="images/fred-page.png">
 </p>
@@ -377,12 +383,14 @@ restorecon reset /usr/share/nginx/html/velma.png context unconfined_u:object_r:u
 
 You may now be able to access all of your other pages hosted on your NGINX web server.
 
-This one http://nginx.local/daphne.html  
+This one [http://nginx.local/daphne.html](http://nginx.local/daphne.html)
+
 <p align="center">
   <img src="images/daphne-page.png">
 </p>
 
-And last but not least http://nginx.local/shaggy.html  
+And last but not least [http://nginx.local/shaggy.html](http://nginx.local/shaggy.html)
+
 <p align="center">
   <img src="images/shaggy-page.png">
 </p>
@@ -394,7 +402,7 @@ Now that we are a little bit more familiar with SELinux, I suppose we can assume
 
 Let's now move on to the next step, where we are going to access a different endpoint in our NGINX server and that request will be redirected to tomcat on a remote server.
 
-Using your browser, try to access http://nginx.local/characters
+Using your browser, try to access [http://nginx.local/characters](http://nginx.local/characters)
 <p align="center">
   <img src="images/proxy-pass-error.png">
 </p>
@@ -438,7 +446,7 @@ Let's set the booleans suggested by SELinux and see what happens next.
 [root@nginx conf.d]# setsebool -P httpd_can_network_relay 1
 ```
 
-Using your browser, check again if you now can access http://nginx.local/characters
+Using your browser, check again if you now can access [http://nginx.local/characters](http://nginx.local/characters)
 
 Hopefully you'll see something like that
 <p align="center">
@@ -467,8 +475,9 @@ $
 Credits
 -------
 
-[Thomas Cameron](http://people.redhat.com/tcameron/) from [Redhat](http://www.redhat.com) gave a few talks about this same subject and that was the inspiration for this demo.  
-His talk is called SELinux for mere mortals and you can find the presentation [here](http://people.redhat.com/tcameron/Summit2016/selinux/selinux_for_mere_mortals.pdf)  
+[Thomas Cameron](http://people.redhat.com/tcameron/) from [Redhat](http://www.redhat.com) gave a few talks about this same subject and that was the inspiration for this demo.
+
+His talk is called SELinux for mere mortals and you can find the presentation [here](http://people.redhat.com/tcameron/Summit2016/selinux/selinux_for_mere_mortals.pdf)
 
 [![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/cNoVgDqqJmM/0.jpg)](https://www.youtube.com/watch?v=cNoVgDqqJmM)
 
