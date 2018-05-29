@@ -477,8 +477,8 @@ Credits
 
 [Thomas Cameron](http://people.redhat.com/tcameron/) from [Redhat](http://www.redhat.com) gave a few talks about this same subject and that was the inspiration for this demo.
 
-His talk is called SELinux for mere mortals and you can find the presentation [here](http://people.redhat.com/tcameron/Summit2016/selinux/selinux_for_mere_mortals.pdf)
+His talk is called SELinux for mere mortals and you can find the presentation [here](http://people.redhat.com/tcameron/Summit2018/selinux/SELinux_for_Mere_Mortals_Summit_2018.pdf)
 
-[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/cNoVgDqqJmM/0.jpg)](https://www.youtube.com/watch?v=cNoVgDqqJmM)
+[![IMAGE ALT TEXT HERE](https://www.youtube.com/embed/_WOKRaM-HI4/0.jpg)](https://www.youtube.com/embed/_WOKRaM-HI4)
 
 ©Hanna-Barbera characters is a registered trademark of the Hanna-Barbera Productions, Inc.
