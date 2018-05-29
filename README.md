@@ -479,6 +479,6 @@ Credits
 
 His talk is called SELinux for mere mortals and you can find the presentation [here](http://people.redhat.com/tcameron/Summit2018/selinux/SELinux_for_Mere_Mortals_Summit_2018.pdf)
 
-[![IMAGE ALT TEXT HERE](https://www.youtube.com/embed/_WOKRaM-HI4/0.JPG)](https://www.youtube.com/embed/_WOKRaM-HI4)
+[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/_WOKRaM-HI4/0.jpg)](https://www.youtube.com/embed/_WOKRaM-HI4)
 
 ©Hanna-Barbera characters is a registered trademark of the Hanna-Barbera Productions, Inc.
