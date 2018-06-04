@@ -19,6 +19,7 @@
     - mlocate
     - setroubleshoot
     - setroubleshoot-server
+    - policycoreutils-devel
 
 - name: Install Java
   yum:
