@@ -381,6 +381,8 @@ restorecon reset /usr/share/nginx/html/velma.html context unconfined_u:object_r:
 restorecon reset /usr/share/nginx/html/velma.png context unconfined_u:object_r:user_home_t:s0->unconfined_u:object_r:httpd_sys_content_t:s0
 ```
 
+>NOTICE: **The execution of the semanage command here can be avoided since the default context for the html folder is already correct**
+
 You may now be able to access all of your other pages hosted on your NGINX web server.
 
 This one [http://nginx.local/daphne.html](http://nginx.local/daphne.html)
