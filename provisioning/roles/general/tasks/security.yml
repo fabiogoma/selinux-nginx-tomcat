@@ -2,7 +2,7 @@
 - name: Set SELinux to enforcing
   selinux:
     policy: targeted
-    state: enforcing
+    state: disabled
 
 - name: Set tomcat hostname
   hostname:
